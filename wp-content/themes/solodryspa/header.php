@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <a href="https://solodryspa.com/" title="Home" class="logo">
+                <a href="<?php echo get_bloginfo('url'); ?>" title="Home" class="logo">
                     <h1>
                     <span>SOLO Dry Spa</span>
                     <img src="<?php echo THEME_URI; ?>assets/img/logo.png" alt="SOLO Dry Spa Logo Image" width="273" height="83" class="solo-animate slide-in-bottom is-inactive" />
