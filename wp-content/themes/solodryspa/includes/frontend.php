@@ -123,7 +123,10 @@ function solo_page_title() {
 			$benefits = get_field('benefits', $post);
 			if($benefits != '') {
 				$title .= '<div class="benefits">';
-					$title .= '<div class="benefits-heading">Benefits:</div>';
+					$benefits_heading = get_field('benefits_heading');
+					if($benefits_heading != '') {
+						$title .= '<div class="benefits-heading">'.$benefits_heading.'</div>';
+					}
 					$title .= '<ul><li>'.implode('</li><li>', explode('<br />',$benefits)).'</li></ul>';
 				$title .= '</div>';
 			}

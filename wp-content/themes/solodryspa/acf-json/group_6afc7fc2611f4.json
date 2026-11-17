@@ -60,6 +60,27 @@
             "append": ""
         },
         {
+            "key": "field_6afcb91aff217",
+            "label": "Benefits Heading",
+            "name": "benefits_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Benefits:",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6afc95f65a418",
             "label": "Benefits",
             "name": "benefits",
@@ -306,5 +327,5 @@
             "json"
         ]
     },
-    "modified": 1794943556
+    "modified": 1794947426
 }
