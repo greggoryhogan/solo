@@ -404,13 +404,15 @@ header {
                 height: 100%;
                 object-fit: cover;
             }
-            @media (min-width: $tablet) {
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 100%;
-                width: 100%;
-                
+            &.not-adaptive {
+                @media (min-width: $tablet) {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    height: 100%;
+                    width: 100%;
+                    
+                }
             }
             @media (max-width: $tablet) {
                 margin-top: 1rem;

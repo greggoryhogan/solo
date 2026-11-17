@@ -91,6 +91,9 @@ function solo_page_title() {
 			$image_output .= ' gallery';
 		} else {
 			$image_output .= ' single';
+			if(!have_rows('faqs', $post)) {
+				$image_output .= ' not-adaptive';
+			}
 		}
 		$image_output .= '">';
 			foreach($images as $image) {
