@@ -23,6 +23,34 @@
             "rows": 6,
             "placeholder": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_6afcdd1f514d5",
+            "label": "Preview Image",
+            "name": "preview_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "uploader": "",
+            "return_format": "id",
+            "library": "all",
+            "acfe_thumbnail": 0,
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "allow_in_bindings": 0,
+            "preview_size": "medium"
         }
     ],
     "location": [
@@ -51,5 +79,5 @@
             "json"
         ]
     },
-    "modified": 1794950746
+    "modified": 1794956598
 }

@@ -22,11 +22,33 @@ if ( post_password_required( $post )) {
             echo '<div class="mailing-list-content">'.get_field('mailing_list_content').'</div>';
         echo '</div>';
     echo '</section>';
-    echo '<section class="container solo-section">';
-        //four therapies
-        echo '<h2>'.get_field('therapy_heading').'</h2>';
-        echo '<div>'.get_field('therapy_content').'</div>';
-    echo '</section>';
+    
+    $therapies = get_posts( array('post_type' => 'therapy', 'numberposts' => -1) );
+    if(!empty($therapies)) {
+        echo '<section class="container therapy-container solo-section">';
+            //four therapies
+            echo '<h2>'.get_field('therapy_heading').'</h2>';
+            echo '<div>'.get_field('therapy_content').'</div>';
+            echo '<div class="row therapies solo-section-content">';
+                foreach ($therapies as $therapy) {
+                    $description = get_field('description', $therapy);
+                    $preview_image = get_field('preview_image', $therapy);
+                    $title = get_the_title($therapy);
+                    echo '<div class="col-6 col-lg-3 maintain-mobile-grid therapy-column">';
+                        echo '<a href="'.get_permalink($therapy).'" class="therapy">';
+                            echo '<div class="feature">';
+                                echo wp_get_attachment_image( $preview_image, 'large' );
+                                echo '<h3 class="h6 font-fahkwang">'.$title.'</h3>';
+                            echo '</div>';
+                            echo '<div class="description">'.$description.'</div>';
+                            echo '<div class="learn-more">Learn more&nbsp;&raquo;</div>';
+                        echo '</a>';
+                    echo '</div>';
+                }
+            echo '</div>';
+        echo '</section>';
+    }
+    
     echo '<section class="solo-section technologies">';
         //our tech
         echo '<div class="container">';
