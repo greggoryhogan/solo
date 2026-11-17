@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) exit;
 get_header();
 ?>
 <section class="container">
-    <h1><?php the_title(); ?></h1>
+    <?php echo solo_page_title(); ?>
 	<?php 
     if ( ! post_password_required( $post )) {
         while ( have_posts() ){

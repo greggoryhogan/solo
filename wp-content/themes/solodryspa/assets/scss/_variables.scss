@@ -1,3 +1,15 @@
 $dark: #040406;
 $white: #fff;
 $white_hover: #3fa6a0;
+$gray: #696969;
+$tablet: 960px;
+@keyframes animateDown {
+  0% {
+    opacity: 0;
+    transform: translatey(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translatey(0);
+  }
+}
