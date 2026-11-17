@@ -1,6 +1,6 @@
 <?php 
 //temp function to remove posts since we hid the posts section
-add_action('init','solo_delete_posts');
+//add_action('init','solo_delete_posts');
 function solo_delete_posts() {
 	if(!isset($_GET['solo-delete-posts'])) {
 		return;
