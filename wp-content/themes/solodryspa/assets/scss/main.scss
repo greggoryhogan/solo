@@ -274,10 +274,10 @@ header {
         }
         .benefits {
             @media (min-width: $tablet) {
-                margin: 1.8rem 0;
+                margin: 3.2rem 0 0;
             }
             @media (max-width: $tablet) {
-                margin: 1rem 0;
+                margin: 1rem 0 0;
             }
             .benefits-heading {
                 letter-spacing: 1.5px;
@@ -297,10 +297,10 @@ header {
         .solo-accordion {
             border-top: 1px solid $gray;
             @media (min-width: $tablet) {
-                margin: 1.8rem 0;
+                margin: 1.8rem 0 0;
             }
             @media (max-width: $tablet) {
-                margin: 1rem 0;
+                margin: 1rem 0 0;
             }
             details {
                 border-bottom: 1px solid $gray;
@@ -363,6 +363,7 @@ header {
             transition: .2s border-color, .2s color;
             align-self: flex-start;
             margin-bottom: 2rem;
+            margin-top: 1.8rem;
             &.center {
                 align-self: center;
             }
