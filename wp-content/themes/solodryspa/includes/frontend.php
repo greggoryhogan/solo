@@ -83,7 +83,10 @@ function solo_page_title() {
 		$h1 = 'h1';
 		$h2 = 'h2';
 	}
-	$images = get_field('images', $post) ?? array();
+	$images = get_field('images', $post);
+	if(!is_array($images)) {
+		$images = array();
+	}
 	$image_output = '';
 	if(!empty($images)) {
 		$image_output .= '<div class="image-container';
