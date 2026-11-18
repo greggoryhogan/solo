@@ -4,6 +4,9 @@ function solo_theme_setup() {
     //add_theme_support( 'post-thumbnails' );
 	add_theme_support('title-tag');
 }
+add_action('init', function() {
+	remove_theme_support('core-block-patterns');
+});
 
 add_filter( 'image_editor_output_format', 'map_jpeg_to_webp' );
 function map_jpeg_to_webp( $mappings ) {

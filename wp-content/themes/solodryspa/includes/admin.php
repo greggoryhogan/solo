@@ -3,6 +3,12 @@ if (!defined('ABSPATH')) exit;
 
 register_nav_menu( 'main-menu',		__( 'Main Menu', 'solo' ) );
 
+add_action('admin_init', 'remove_wp_block_menu', 100);
+function remove_wp_block_menu() {
+    remove_submenu_page( 'themes.php', 'site-editor.php?p=/pattern' );
+    remove_submenu_page( 'themes.php', 'font-library.php' );
+}
+
 function solodryspa_disable_comment_support() {
     foreach (get_post_types(array(), 'names') as $post_type) {
         remove_post_type_support($post_type, 'comments');
