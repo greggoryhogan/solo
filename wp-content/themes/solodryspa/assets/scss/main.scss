@@ -754,6 +754,9 @@ footer {
             h2 {
                 margin: 0;
             }
+            .mailing-list-content {
+                text-align: center;
+            }
             .mc-signup {
                 @media (min-width: $tablet) {
                     width: 60%;
@@ -989,6 +992,7 @@ footer {
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
             gap: 1.5rem;
             h2 {
                 margin: 0;
