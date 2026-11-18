@@ -337,7 +337,11 @@ function solo_page_content() {
 						if($heading != '') {
 							echo '<h2 class="">'.$heading.'</h2>';
 						}
-						echo '<div class="solo-section-content image-'.$image_position.'">';
+						$position_class = '';
+						if($image != '') {
+							$position_class = 'image-'.$image_position;
+						}
+						echo '<div class="solo-section-content '.$position_class.'">';
 							echo '<div class="content">';
 								if($content != '') {
 									echo '<div>'.$content.'</div>';
