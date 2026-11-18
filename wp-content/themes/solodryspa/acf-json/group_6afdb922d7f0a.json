@@ -155,6 +155,43 @@
                     "parent_repeater": "field_6afdb9237e6cc"
                 },
                 {
+                    "key": "field_6afdf9ea88362",
+                    "label": "Image 2",
+                    "name": "image_2",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_6afdb9e37e6d3",
+                                "operator": "!=",
+                                "value": "background"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "uploader": "",
+                    "return_format": "id",
+                    "library": "all",
+                    "acfe_thumbnail": 0,
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "allow_in_bindings": 0,
+                    "preview_size": "medium",
+                    "parent_repeater": "field_6afdb9237e6cc"
+                },
+                {
                     "key": "field_6afdb9e37e6d3",
                     "label": "Position",
                     "name": "position",
@@ -218,5 +255,5 @@
             "json"
         ]
     },
-    "modified": 1795013153
+    "modified": 1795029505
 }

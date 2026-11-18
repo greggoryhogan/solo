@@ -312,6 +312,14 @@ function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation
 	<?php
 }
 
+add_filter( 'wp_get_attachment_image_attributes', function( $attr ) {
+	if ( in_array( 'solo-gallery-image', explode( ' ', $attr['class'] ?? '' ), true ) ) {
+		// The portrait crop can scale the source by height while sizes="auto" measures the box width.
+		unset( $attr['srcset'], $attr['sizes'] );
+	}
+	return $attr;
+} );
+
 function solo_page_content() {
 	if(have_rows('page_content')) {
 		while(have_rows('page_content')) {
@@ -364,8 +372,22 @@ function solo_page_content() {
 								}
 							echo '</div>';
 							if($image != '') {
-								echo '<div class="solo-image">';
-									echo wp_get_attachment_image($image, 'full', false, array( 'loading' => 'lazy' ) );
+								$size = 'full';
+								$image_attrs = array( 'loading' => 'lazy' );
+								$image_2 = get_sub_field('image_2');
+								echo '<div class="solo-image';
+								if($image_2 != '') {
+									//$size = 'large';
+									$image_attrs['class'] = 'attachment-large size-large solo-gallery-image';
+									echo ' gallery';
+								} else {
+									echo ' single';
+								}
+								echo '">';
+									echo wp_get_attachment_image($image, $size, false, $image_attrs);
+									if($image_2 != '') {
+										echo wp_get_attachment_image($image_2, $size, false, $image_attrs);
+									}
 								echo '</div>';
 							}
 						echo '</div>';
