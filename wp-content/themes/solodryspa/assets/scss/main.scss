@@ -784,6 +784,14 @@ footer {
                         color: $white;
                     }
                 }
+                &.is-current {
+                    img {
+                        opacity: .2;
+                    }
+                    .learn-more {
+                        color: $gray;
+                    }
+                }
             }
         }
     }
