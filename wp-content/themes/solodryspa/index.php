@@ -6,16 +6,15 @@ if ( post_password_required( $post )) {
         echo get_the_password_form();
     echo '</section>';
 } else {
-    echo '<section class="container">';
+    echo '<section class="container solo-section">';
         echo solo_page_title();
     echo '</section>';
-    echo '<section class="container">';
     if ( ! post_password_required( $post )) {
         while ( have_posts() ){
-            the_post();							// Post Loop	
-            the_content();	// Content Builder & WordPress Editor Content
+            the_post();
+            //the_content();
+            solo_page_content();
         }
     } 
-    echo '</section>';
 }
 get_footer(); ?>

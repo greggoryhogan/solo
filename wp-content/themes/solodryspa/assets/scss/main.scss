@@ -281,6 +281,34 @@ header {
         }
     }
 }
+.solo-btn {
+    background: transparent;
+    border: 1px solid $gray;
+    color: $gray;
+    text-transform: uppercase;
+    padding: .25rem 1.5rem;
+    border-radius: .375rem;
+    font-size: .875rem;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 400;
+    letter-spacing: 1px;
+    transition: .2s border-color, .2s color;
+    align-self: flex-start;
+    margin-bottom: 2rem;
+    margin-top: 1.8rem;
+    &.center {
+        align-self: center;
+    }
+    &:hover,
+    &:focus-within {
+        border-color: $white;
+        color: $white;
+    }
+    @media (max-width: $mobile) {
+        margin-bottom: 1rem;
+    }
+}
 .solo-title-container {
     //margin-bottom: clamp(2rem, 1rem + 3vw, 4rem);
     margin-bottom: 2rem;
@@ -380,31 +408,6 @@ header {
                         height: auto;
                     }
                 }
-            }
-        }
-        .booking-link {
-            background: transparent;
-            border: 1px solid $gray;
-            color: $gray;
-            text-transform: uppercase;
-            padding: .25rem 1.5rem;
-            border-radius: .375rem;
-            font-size: .875rem;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 400;
-            letter-spacing: 1px;
-            transition: .2s border-color, .2s color;
-            align-self: flex-start;
-            margin-bottom: 2rem;
-            margin-top: 1.8rem;
-            &.center {
-                align-self: center;
-            }
-            &:hover,
-            &:focus-within {
-                border-color: $white;
-                color: $white;
             }
         }
     }
@@ -572,6 +575,14 @@ footer {
         }
         @media (max-width: $mobile) {
             margin-top: 3rem;
+        }
+    }
+    &.margin-sm + .margin-sm {
+        @media (min-width: $mobile) {
+            margin-top: 3rem;
+        }
+        @media (max-width: $mobile) {
+            margin-top: 2rem;
         }
     }
     &-content {
@@ -773,6 +784,74 @@ footer {
                         color: $white;
                     }
                 }
+            }
+        }
+    }
+    .page-container {
+        .solo-section-content {
+            display: flex;
+            gap: 3rem;
+            p {
+                margin: 0 0 1rem 0;
+            }
+            &.image-left {
+                flex-direction: row-reverse;
+            }
+            @media (max-width: $mobile) {
+                gap: 1rem;
+                flex-direction: column-reverse!important;
+            }
+            .solo-image {
+                flex: 0 0 auto;
+                @media (min-width: $mobile) {
+                    width: 52%;
+                }
+                @media (max-width: $mobile) {
+                    overflow: hidden;
+                    aspect-ratio: 1.5;
+                }
+                img {
+                    border-radius: 1.3rem;
+                    @media (max-width: $mobile) {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+            }
+        }
+    }
+    &.has-bg-img {
+        padding: 3rem 0;
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            h2 {
+                margin: 0;
+            }
+            .solo-btn {
+                color: $white;
+                border-color: $white;
+                background: rgba(0,0,0,.3);
+                transition: .2s background;
+                margin: 0;
+                &:hover {
+                    background: rgba(0,0,0,.6);
+                }
+            }
+        }
+    }
+    &.therapies-gap {
+        & + .therapy-container {
+            @media (min-width: $mobile) {
+                padding-top: 2rem;
+            }
+            @media (max-width: $mobile) {
+                padding-top: 1rem;
             }
         }
     }

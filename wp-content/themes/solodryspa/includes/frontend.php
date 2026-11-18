@@ -5,6 +5,13 @@ function solo_theme_setup() {
 	add_theme_support('title-tag');
 }
 
+add_filter( 'image_editor_output_format', 'map_jpeg_to_webp' );
+function map_jpeg_to_webp( $mappings ) {
+	$mappings[ 'image/jpeg' ] = 'image/webp';
+    $mappings[ 'image/png' ] = 'image/webp';
+	return $mappings;
+};
+
 // Disable Gutenberg on the back end.
 add_filter( 'use_block_editor_for_post', '__return_false' );
 
@@ -147,9 +154,9 @@ function solo_page_title() {
 					$link_url = $link['url'];
 					$link_title = $link['title'];
 					$link_target = $link['target'] ? $link['target'] : '_self';
-					$title .= '<a href="'.$link_url.'" class="booking-link '.$button_alignment.'" target="'.$link_target.'" title="'.$link_title.'">'.$link_title.'</a>';
+					$title .= '<a href="'.$link_url.'" class="solo-btn '.$button_alignment.'" target="'.$link_target.'" title="'.$link_title.'">'.$link_title.'</a>';
 				} else {
-					$title .= '<a href="'.SOLO_BOOKING_LINK.'" class="booking-link '.$button_alignment.'" target="_blank" title="Book your experience">Book Your Experience</a>';
+					$title .= '<a href="'.SOLO_BOOKING_LINK.'" class="solo-btn '.$button_alignment.'" target="_blank" title="Book your experience">Book Your Experience</a>';
 				}
 			}
 		$title .= '</div>';
@@ -293,4 +300,96 @@ function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation
 	</script>
 	<?php endif; ?>
 	<?php
+}
+
+function solo_page_content() {
+	if(have_rows('page_content')) {
+		while(have_rows('page_content')) {
+			the_row();
+			$heading = get_sub_field('heading');
+			$content = get_sub_field('content');
+			$link = get_sub_field('cta');
+			$image = get_sub_field('image');
+			$image_position = get_sub_field('position');
+			if($image != '' && $image_position == 'background') {
+				echo '<section class="solo-section margin-sm has-bg-img">';
+					echo '<div class="solo-img-bg">';
+						echo wp_get_attachment_image($image, 'full', false, array( 'loading' => 'lazy' ) );
+					echo '</div>';
+					echo '<div class="container">';
+						if($heading != '') {
+							echo '<h2 class="">'.$heading.'</h2>';
+						}
+						if($content != '') {
+							echo '<div class="">'.$content.'</div>';
+						}
+						if($link) {
+							$link_url = $link['url'];
+							$link_title = $link['title'];
+							$link_target = $link['target'] ? $link['target'] : '_self';
+							echo '<a href="'.$link_url.'" class="solo-btn center" target="'.$link_target.'" title="'.$link_title.'">'.$link_title.'</a>';
+						}
+					echo '</div>';
+				echo '</section>';
+			} else {
+				echo '<section class="solo-section margin-sm">';
+					echo '<div class="container page-container">';
+						if($heading != '') {
+							echo '<h2 class="">'.$heading.'</h2>';
+						}
+						echo '<div class="solo-section-content image-'.$image_position.'">';
+							echo '<div class="content">';
+								if($content != '') {
+									echo '<div>'.$content.'</div>';
+								}
+								if($link) {
+									$link_url = $link['url'];
+									$link_title = $link['title'];
+									$link_target = $link['target'] ? $link['target'] : '_self';
+									echo '<a href="'.$link_url.'" class="solo-btn start" target="'.$link_target.'" title="'.$link_title.'">'.$link_title.'</a>';
+								}
+							echo '</div>';
+							if($image != '') {
+								echo '<div class="solo-image">';
+									echo wp_get_attachment_image($image, 'full', false, array( 'loading' => 'lazy' ) );
+								echo '</div>';
+							}
+						echo '</div>';
+					echo '</div>';
+				echo '</section>';
+			}
+		}
+	}
+	if(get_post_type() == 'therapy') {
+		echo '<section class="solo-section therapies-gap"></section>';
+		therapies_list();
+	}
+}
+
+function therapies_list() {
+	$therapies = get_posts( array('post_type' => 'therapy', 'numberposts' => -1) );
+    if(!empty($therapies)) {
+        echo '<section class="container therapy-container solo-section">';
+            //four therapies
+            echo '<h2>'.get_field('therapy_heading').'</h2>';
+            echo '<div>'.get_field('therapy_content').'</div>';
+            echo '<div class="row therapies solo-section-content">';
+                foreach ($therapies as $therapy) {
+                    $description = get_field('description', $therapy);
+                    $preview_image = get_field('preview_image', $therapy);
+                    $title = get_the_title($therapy);
+                    echo '<div class="col-6 col-lg-3 maintain-mobile-grid therapy-column">';
+                        echo '<a href="'.get_permalink($therapy).'" class="therapy">';
+                            echo '<div class="feature">';
+                                echo wp_get_attachment_image( $preview_image, 'large', false, array( 'loading' => 'lazy' ) );
+                                echo '<h3 class="h6 font-fahkwang">'.$title.'</h3>';
+                            echo '</div>';
+                            echo '<div class="description">'.$description.'</div>';
+                            echo '<div class="learn-more">Learn more&nbsp;&raquo;</div>';
+                        echo '</a>';
+                    echo '</div>';
+                }
+            echo '</div>';
+        echo '</section>';
+    }
 }
