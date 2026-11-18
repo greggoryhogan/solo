@@ -74,7 +74,7 @@ function solo_wp_nav_menu( $location = 'main-menu', $args = array() ) {
 	echo $menu;
 }
 
-add_filter( 'wp_nav_menu_items', 'solo_add_booking_link_to_nav', 10, 2 );
+//add_filter( 'wp_nav_menu_items', 'solo_add_booking_link_to_nav', 10, 2 );
 function solo_add_booking_link_to_nav( $items, $args ) {
     $items .= '<li class="booking-link"><a href="'.SOLO_BOOKING_LINK.'" class="solo-btn nav-item" target="_blank" title="Book your experience">Book Your Experience</a></li>';
     

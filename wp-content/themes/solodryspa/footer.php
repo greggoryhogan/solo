@@ -11,7 +11,7 @@
                 </ul>
             </div>
             <div class="col-md-6 map-container">
-                <img src="<?php echo THEME_URI; ?>assets/img/location.png" alt="SOLO Dry Spa location" width="273" height="83" loading="lazy" />
+                <img src="<?php echo THEME_URI; ?>assets/img/location.jpg" alt="SOLO Dry Spa location" width="273" height="83" loading="lazy" />
             </div>
         </div>
     </div>

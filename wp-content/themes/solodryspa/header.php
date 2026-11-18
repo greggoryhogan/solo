@@ -17,7 +17,7 @@
                 </a>
             </div>
             <div class="col-md-8 font-fahkwang solo-nav-container">
-                <a href="<?php echo SOLO_BOOKING_LINK; ?>" class="solo-btn nav-item" target="_blank" title="Book your experience">Book Your Experience</a>
+                <!--<a href="<?php echo SOLO_BOOKING_LINK; ?>" class="solo-btn nav-item" target="_blank" title="Book your experience">Book Your Experience</a>-->
                 <button type="button" class="solo-menu-toggle" aria-label="Open menu" aria-haspopup="dialog" aria-controls="solo-menu-drawer" aria-expanded="false" hidden>
                     <span class="solo-menu-icon" aria-hidden="true"></span>
                 </button>
