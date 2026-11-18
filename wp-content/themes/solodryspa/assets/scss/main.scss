@@ -564,7 +564,15 @@ footer {
 
 .solo-section {
     & + .solo-section {
-        margin-top: 6rem;
+        @media (min-width: $mobile) {
+            margin-top: 6rem;
+        }
+        @media (max-width: $tablet) {
+            margin-top: 4rem;
+        }
+        @media (max-width: $mobile) {
+            margin-top: 3rem;
+        }
     }
     &-content {
         position: relative;
