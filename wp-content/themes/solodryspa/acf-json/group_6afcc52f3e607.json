@@ -63,6 +63,48 @@
             "append": ""
         },
         {
+            "key": "field_6afd04e20bbde",
+            "label": "Button Text",
+            "name": "mailing_list_button_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Join the Waitlist",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6afd05461b2b5",
+            "label": "Confirmation Text",
+            "name": "mailing_list_confirmation",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Thank you for subscribing to our waitlist!",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6afcc6f3bcb4e",
             "label": "Background",
             "name": "mailing_list_background",
@@ -310,5 +352,5 @@
             "json"
         ]
     },
-    "modified": 1794951304
+    "modified": 1794966880
 }

@@ -118,20 +118,46 @@
             },
             "choices": {
                 "show": "Show booking link",
-                "hide": "Hide booking link"
+                "hide": "Hide booking link",
+                "custom": "Custom"
             },
             "default_value": "show",
             "return_format": "value",
             "multiple": 0,
-            "allow_custom": 0,
-            "placeholder": "",
-            "search_placeholder": "",
             "allow_null": 0,
             "allow_in_bindings": 0,
             "ui": 0,
             "ajax": 0,
+            "placeholder": "",
             "create_options": 0,
-            "save_options": 0
+            "save_options": 0,
+            "allow_custom": 0,
+            "search_placeholder": ""
+        },
+        {
+            "key": "field_6afd11a9a9999",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6afc9f462a49f",
+                        "operator": "==",
+                        "value": "custom"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 0
         },
         {
             "key": "field_6afc9ae563204",
@@ -327,5 +353,5 @@
             "json"
         ]
     },
-    "modified": 1794947426
+    "modified": 1794970052
 }

@@ -14,12 +14,13 @@ if ( post_password_required( $post )) {
         $background = get_field('mailing_list_background');
         if($background != '') {
             echo '<div class="solo-img-bg">';
-                echo wp_get_attachment_image($background, 'full');
+                echo wp_get_attachment_image($background, 'full', false, array( 'loading' => 'lazy' ) );
             echo '</div>';
         }
         echo '<div class="container">';
             echo '<h2 class="mailing-list-heading">'.get_field('mailing_list_heading').'</h2>';
             echo '<div class="mailing-list-content">'.get_field('mailing_list_content').'</div>';
+            solo_mailchimp_signup(get_field('mailing_list_button_text'), get_field('mailing_list_confirmation'));
         echo '</div>';
     echo '</section>';
     
@@ -37,7 +38,7 @@ if ( post_password_required( $post )) {
                     echo '<div class="col-6 col-lg-3 maintain-mobile-grid therapy-column">';
                         echo '<a href="'.get_permalink($therapy).'" class="therapy">';
                             echo '<div class="feature">';
-                                echo wp_get_attachment_image( $preview_image, 'large' );
+                                echo wp_get_attachment_image( $preview_image, 'large', false, array( 'loading' => 'lazy' ) );
                                 echo '<h3 class="h6 font-fahkwang">'.$title.'</h3>';
                             echo '</div>';
                             echo '<div class="description">'.$description.'</div>';
@@ -59,7 +60,7 @@ if ( post_password_required( $post )) {
             $background = get_field('tech_background');
             if($background != '') {
                 echo '<div class="solo-img-bg">';
-                    echo wp_get_attachment_image($background, 'full');
+                    echo wp_get_attachment_image( $background, 'full', false, array( 'loading' => 'lazy' ) );
                 echo '</div>';
             }
             if(have_rows('technologies')) {

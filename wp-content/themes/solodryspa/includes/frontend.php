@@ -1,15 +1,4 @@
 <?php 
-//temp function to remove posts since we hid the posts section
-//add_action('init','solo_delete_posts');
-function solo_delete_posts() {
-	if(!isset($_GET['solo-delete-posts'])) {
-		return;
-	}
-	$allposts= get_posts( array('post_type'=>'post','numberposts'=>-1) );
-	foreach ($allposts as $eachpost) {
-		wp_delete_post( $eachpost->ID, true );
-	}
-}
 add_action( 'after_setup_theme', 'solo_theme_setup' );
 function solo_theme_setup() {
     //add_theme_support( 'post-thumbnails' );
@@ -42,6 +31,7 @@ function solo_scripts() {
 	$dir = SOLO_URL.'/wp-content/themes/solodryspa/assets';
 	wp_enqueue_style( 'solo-fonts', 'https://use.typekit.net/pzx0ris.css', false, $version, 'all' );
 	wp_enqueue_style( 'solo', $dir.'/css/main.css', false, $version, 'all' );
+	//wp_enqueue_script( 'solo', $dir.'/js/site.min.js', array(), $version, true );
 }
 
 add_action('wp_head', 'solo_head');
@@ -149,7 +139,15 @@ function solo_page_title() {
 
 			$booking_link = get_field('booking_link', $post);
 			if($booking_link !== 'hide') {
-				$title .= '<a href="'.SOLO_BOOKING_LINK.'" class="booking-link '.$button_alignment.'" target="_blank" title="Book your experience">Book Your Experience</a>';
+				if($booking_link == 'custom') {
+					$link = get_field('button');
+					$link_url = $link['url'];
+					$link_title = $link['title'];
+					$link_target = $link['target'] ? $link['target'] : '_self';
+					$title .= '<a href="'.$link_url.'" class="booking-link '.$button_alignment.'" target="'.$link_target.'" title="'.$link_title.'">'.$link_title.'</a>';
+				} else {
+					$title .= '<a href="'.SOLO_BOOKING_LINK.'" class="booking-link '.$button_alignment.'" target="_blank" title="Book your experience">Book Your Experience</a>';
+				}
 			}
 		$title .= '</div>';
 
@@ -157,4 +155,139 @@ function solo_page_title() {
 	
 	$title .= '</div>';
 	return $title;
+}
+
+function solo_mailchimp_waitlist_submit() {
+	if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+		wp_send_json_error( null, 405 );
+	}
+
+	if ( ! defined( 'SOLO_MAILCHIMP_API_KEY' ) || ! SOLO_MAILCHIMP_API_KEY ) {
+		wp_send_json_error( null, 503 );
+	}
+
+	if ( ! empty( $_POST['b_3e5a9856682ea90ff75eeba0c_14aac10992'] ) ) {
+		wp_send_json_success( array( 'pending' => true ) );
+	}
+
+	$email = isset( $_POST['EMAIL'] ) && is_string( $_POST['EMAIL'] )
+		? trim( wp_unslash( $_POST['EMAIL'] ) )
+		: '';
+	if ( ! is_email( $email ) ) {
+		wp_send_json_error( 'Enter a valid email address.', 400 );
+	}
+
+	$rate_key = 'solo_mc_' . hash_hmac( 'sha256', $_SERVER['REMOTE_ADDR'] ?? '', wp_salt() );
+	$attempts = (int) get_transient( $rate_key );
+	if ( $attempts >= 10 ) {
+		wp_send_json_error( 'Too many signup attempts. Please try again in a minute.', 429 );
+	}
+	set_transient( $rate_key, $attempts + 1, MINUTE_IN_SECONDS );
+
+	$member = md5( strtolower( $email ) );
+	$result = wp_remote_request( "https://us20.api.mailchimp.com/3.0/lists/14aac10992/members/$member", array(
+		'method'      => 'PUT',
+		'timeout'     => 8,
+		'redirection' => 0,
+		'headers'     => array(
+			'Authorization' => 'Bearer ' . SOLO_MAILCHIMP_API_KEY,
+			'Content-Type'  => 'application/json',
+		),
+		'body'        => wp_json_encode( array(
+			'email_address' => $email,
+			'status_if_new' => 'subscribed',
+		) ),
+	) );
+
+	if ( ! is_wp_error( $result ) && 200 === wp_remote_retrieve_response_code( $result ) ) {
+		$data = json_decode( wp_remote_retrieve_body( $result ), true );
+		$status = $data['status'] ?? '';
+		if ( in_array( $status, array( 'pending', 'subscribed' ), true ) ) {
+			wp_send_json_success( array( 'pending' => 'pending' === $status ) );
+		}
+	}
+
+	wp_send_json_error( null, 502 );
+}
+add_action( 'wp_ajax_solo_mailchimp_waitlist_submit', 'solo_mailchimp_waitlist_submit' );
+add_action( 'wp_ajax_nopriv_solo_mailchimp_waitlist_submit', 'solo_mailchimp_waitlist_submit' );
+
+function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation = 'Thank you for subscribing to our waitlist!') {
+	if ( ! is_string( $confirmation ) || '' === trim( $confirmation ) ) {
+		$confirmation = 'Thank you for subscribing to our waitlist!';
+	}
+
+	?>
+	<div id="mc_embed_signup" class="mc-signup">
+		<form id="mc-embedded-subscribe-form" class="mc_container" method="post"
+			action="https://solodryspa.us20.list-manage.com/subscribe/post?u=3e5a9856682ea90ff75eeba0c&amp;id=14aac10992&amp;f_id=00ce79e0f0">
+		
+			<input
+				type="email"
+				name="EMAIL"
+				id="mce-EMAIL"
+				placeholder="Your email"
+				required
+				class=""
+			>
+			<!-- Mailchimp honeypot - leave this -->
+			<div style="position:absolute;left:-5000px;" aria-hidden="true">
+				<input
+					type="text"
+					name="b_3e5a9856682ea90ff75eeba0c_14aac10992"
+					tabindex="-1"
+					value=""
+				>
+			</div>
+
+			<button type="submit" id="mc-embedded-subscribe"><?php echo esc_html( $button_text ); ?></button>
+
+			<div id="mce-response" role="status"></div>
+		</form>
+	</div>
+	<?php if ( defined( 'SOLO_MAILCHIMP_API_KEY' ) && SOLO_MAILCHIMP_API_KEY ) : ?>
+	<script>
+		document.getElementById('mc-embedded-subscribe-form').addEventListener('submit', async function(e) {
+			const form = this;
+			if (form.dataset.useMailchimpForm) {
+				return;
+			}
+
+			e.preventDefault();
+
+			const response = form.querySelector('#mce-response');
+			const button = form.querySelector('#mc-embedded-subscribe');
+			const body = new URLSearchParams(new FormData(form));
+			body.set('action', 'solo_mailchimp_waitlist_submit');
+			response.textContent = '';
+			button.disabled = true;
+
+			try {
+				const request = await fetch(<?php echo wp_json_encode( wp_make_link_relative( admin_url( 'admin-ajax.php' ) ), JSON_HEX_TAG ); ?>, {
+					method: 'POST',
+					body
+				});
+				const result = await request.json();
+
+				if (result.success) {
+					response.textContent = result.data.pending
+						? 'Check your email to confirm your waitlist signup.'
+						: <?php echo wp_json_encode( $confirmation, JSON_HEX_TAG ); ?>;
+					form.reset();
+				} else if (request.status === 400 || request.status === 429) {
+					response.textContent = result.data;
+				} else {
+					throw new Error('Signup unavailable');
+				}
+			} catch {
+				form.dataset.useMailchimpForm = 'true';
+				response.textContent = 'You can continue on Mailchimp with the email you entered.';
+				button.textContent = 'Continue on Mailchimp';
+			} finally {
+				button.disabled = false;
+			}
+		});
+	</script>
+	<?php endif; ?>
+	<?php
 }
