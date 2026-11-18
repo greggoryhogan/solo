@@ -46,6 +46,9 @@ function solo_head() {
 	//fav
 	echo '<link media="(prefers-color-scheme: light)" href="'.THEME_URI . 'assets/img/fav-light.png" rel="icon" type="image/x-icon" />';
   	echo '<link media="(prefers-color-scheme: dark)" href="'.THEME_URI . 'assets/img/fav-dark.png" rel="icon" type="image/x-icon" />';
+	//viewport
+	echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+
 }
 
 function solo_wp_nav_menu( $location = 'main-menu', $args = array() ) {	
