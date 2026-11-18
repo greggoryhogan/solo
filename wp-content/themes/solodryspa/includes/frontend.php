@@ -376,11 +376,11 @@ function solo_page_content() {
 	}
 	if(get_post_type() == 'therapy') {
 		echo '<section class="solo-section therapies-gap"></section>';
-		therapies_list();
+		therapies_list(false);
 	}
 }
 
-function therapies_list() {
+function therapies_list($show_desc = true) {
 	$current = 0;
 	if(get_post_type() == 'therapy') {
 		$current = get_the_ID();
@@ -406,8 +406,14 @@ function therapies_list() {
                                 echo wp_get_attachment_image( $preview_image, 'large', false, array( 'loading' => 'lazy' ) );
                                 echo '<h3 class="h6 font-fahkwang">'.$title.'</h3>';
                             echo '</div>';
-                            echo '<div class="description">'.$description.'</div>';
-                            echo '<div class="learn-more">Learn more&nbsp;&raquo;</div>';
+							if($show_desc) {
+                            	echo '<div class="description">'.$description.'</div>';
+							}
+                            echo '<div class="learn-more';
+							if($show_desc) {
+								echo ' border-top';
+							}
+							echo '">Learn more&nbsp;&raquo;</div>';
 						if($therapy == $current) {
 							echo '</div>';
 						} else {
