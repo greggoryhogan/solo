@@ -248,37 +248,175 @@ header {
             opacity: 0;
         }
     }
-    nav {
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            display: flex;
-            align-items: flex-start;
-            text-transform: uppercase;
-            font-weight: 400;
-            letter-spacing: 1px;
-            font-size: clamp(1rem, 1rem + 5vw, 1.12rem);
-            @media (min-width: $tablet) {
-                justify-content: flex-end;
-            }
-            @media (max-width: $tablet) {
-                justify-content: center;
-                margin-top: 1.5rem;
-            }
-            li {
-                &:not(:last-of-type) {
-                    &:after {
-                        content: '|';
-                        position: relative;
-                        padding: 0 1.5rem;
-                    }
-                }
-                a {
-                    text-decoration: none;
-                }
+}
+.solo-nav-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: .75rem 1.25rem;
+
+    @media (max-width: $mobile) {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .solo-menu-toggle {
+        display: inline-grid;
+        place-items: center;
+        width: 3rem;
+        height: 2.2rem;
+        padding: 0;
+        border: 1px solid $gray;
+        border-radius: .375rem;
+        background: $dark;
+        color: $white;
+        font-size: 1.75rem;
+        line-height: 1;
+        cursor: pointer;
+
+        &[hidden] {
+            display: none;
+        }
+
+        &:hover {
+            border-color: $white;
+        }
+    }
+    .solo-menu-icon {
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        box-shadow: 0 -6px currentColor, 0 6px currentColor;
+    }
+}
+.solo-menu-drawer {
+    position: fixed;
+    inset: 0 0 0 auto;
+    margin: 0;
+    width: min(100%, 26rem);
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    padding: clamp(1.25rem, 5vw, 2.5rem);
+    border: 0;
+    background: $dark;
+    color: $white;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, .5);
+    overscroll-behavior: contain;
+
+    &:not([open]) {
+        display: none;
+    }
+
+    &::backdrop {
+        background: rgba(0, 0, 0, .65);
+    }
+
+    &[open] {
+        @media (prefers-reduced-motion: no-preference) {
+            animation: solo-menu-slide-in .25s ease-out;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &::backdrop {
+            transition: opacity .25s ease-in;
+        }
+
+        &.is-closing::backdrop {
+            opacity: 0;
+        }
+    }
+
+    .solo-primary-nav {
+        padding: 0;
+    }
+    .solo-menu-toggle {
+        color: $white;
+        border: 1px solid $gray;
+        background: transparent;
+        padding: 0;
+        display: grid;
+        place-items: center;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        &:hover {
+            border-color: $white;
+        }
+    }
+    .solo-menu-close-icon {
+        display: grid;
+
+        &::before,
+        &::after {
+            content: "";
+            grid-area: 1 / 1;
+            width: 1.125rem;
+            height: 2px;
+            background: currentColor;
+        }
+
+        &::before {
+            transform: rotate(45deg);
+        }
+
+        &::after {
+            transform: rotate(-45deg);
+        }
+    }
+    .solo-menu-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        a {
+            /*opacity: .5;
+            &:hover {
+                opacity: 1;
+            }*/
+            img {
+                max-width: 180px;
             }
         }
+    }
+    .solo-primary-nav {
+        padding: 1rem 0;
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sub-menu,
+        .children {
+            padding-left: 1rem;
+        }
+
+        a {
+            display: block;
+            padding: .625rem 0;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            color: $white;
+            &:hover,
+            &[aria-current="page"] {
+                filter: brightness(50%);
+            }
+        }
+    }
+}
+
+html:has(.solo-menu-drawer[open]) {
+    overflow: hidden;
+}
+@keyframes solo-menu-slide-in {
+    from {
+        transform: translateX(100%);
     }
 }
 .solo-btn {
@@ -307,6 +445,13 @@ header {
     }
     @media (max-width: $mobile) {
         margin-bottom: 1rem;
+    }
+    &.nav-item {
+        margin: 0;
+        background: rgba(0,0,0,.6);
+        @media (max-width: $mobile) {
+            align-self: center;
+        }
     }
 }
 .solo-title-container {

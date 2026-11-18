@@ -37,8 +37,8 @@ function solo_scripts() {
 	$version = wp_get_theme()->get('Version');
 	$dir = SOLO_URL.'/wp-content/themes/solodryspa/assets';
 	wp_enqueue_style( 'solo-fonts', 'https://use.typekit.net/pzx0ris.css', false, $version, 'all' );
-	wp_enqueue_style( 'solo', $dir.'/css/main.css', false, $version, 'all' );
-	//wp_enqueue_script( 'solo', $dir.'/js/site.min.js', array(), $version, true );
+	wp_enqueue_style( 'solo', $dir.'/css/main.css', false, filemtime( get_theme_file_path( 'assets/css/main.css' ) ), 'all' );
+	wp_enqueue_script( 'solo', $dir.'/js/site.min.js', array(), $version, true );
 }
 
 add_action('wp_head', 'solo_head');
@@ -72,6 +72,13 @@ function solo_wp_nav_menu( $location = 'main-menu', $args = array() ) {
 	$menu = wp_nav_menu( $args ); 
 		
 	echo $menu;
+}
+
+//add_filter( 'wp_nav_menu_items', 'solo_add_booking_link_to_nav', 10, 2 );
+function solo_add_booking_link_to_nav( $items, $args ) {
+    $items .= '<li class="booking-link"><a href="'.SOLO_BOOKING_LINK.'" class="solo-btn nav-item" target="_blank" title="Book your experience">Book Your Experience</a></li>';
+    
+    return $items;
 }
 
 function solo_page_title() {
