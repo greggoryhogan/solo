@@ -30,8 +30,8 @@ add_action('acf/init', function() {
 </svg>';
 
     acf_add_options_page(array(
-        'page_title'    => 'Solo Dry Spa',
-        'menu_title'    => 'Solo Dry Spa',
+        'page_title'    => 'SOLO Dry Spa',
+        'menu_title'    => 'SOLO Dry Spa',
         'menu_slug'     => 'solo-dry-spa',
         'capability'    => 'edit_posts',
         'redirect'      => false,
