@@ -24,7 +24,7 @@
                     }
                     $directions = get_field('directions', 'option');
                     if($directions != '') {
-                        echo '<li class="directions"><a href="'.$directions['url'].'" title="'.$directions['title'].'">'.$directions['title'].'</a></li>';
+                        echo '<li class="directions"><a href="'.$directions['url'].'" title="'.$directions['title'].'" target="_blank">'.$directions['title'].'</a></li>';
                     }
                     ?>
                 </ul>
