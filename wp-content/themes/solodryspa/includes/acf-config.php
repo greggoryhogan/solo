@@ -22,7 +22,6 @@ function my_acf_json_load_point( $paths ) {
     return $paths;    
 }
 
-/*
 add_action('acf/init', function() {
   if( function_exists('acf_add_options_page') ) {
 
@@ -37,9 +36,8 @@ add_action('acf/init', function() {
         'capability'    => 'edit_posts',
         'redirect'      => false,
         'icon_url'      => 'data:image/svg+xml;base64,' . base64_encode($therapy_svg),
-        'position'      => 1,
+        'position'      => 2,
     ));
 
   }
 });
-*/

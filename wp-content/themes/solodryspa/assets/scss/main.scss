@@ -641,6 +641,7 @@ footer {
             
             &:last-of-type {
                 border-bottom: none;
+                padding-bottom: 0;
             }
             &.address,
             &.phone {
@@ -715,6 +716,9 @@ footer {
                     aspect-ratio: 2;
                 }
             }
+        }
+        .location-hours {
+
         }
     }
 }
