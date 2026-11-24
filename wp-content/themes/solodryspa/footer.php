@@ -1,6 +1,9 @@
 </main>
 <footer class="container">
-    <div class="h2">Find us in Newburyport.</div>
+    <?php $heading = get_field('location_heading', 'option');
+    if($heading != '') {
+        echo '<h4 class="h2">'.$heading.'</h4>';
+    } ?>
     <div class="solo-section-content">
         <div class="row location-info">
             <div class="col-md-6">

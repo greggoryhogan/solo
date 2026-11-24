@@ -21,6 +21,27 @@
             "selected": 0
         },
         {
+            "key": "field_6b05a6f349ae3",
+            "label": "Heading",
+            "name": "location_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Find us in Newburyport.",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_6b05a270d34c3",
             "label": "Location",
             "name": "location",
@@ -290,5 +311,5 @@
             "json"
         ]
     },
-    "modified": 1795531498
+    "modified": 1795532559
 }
