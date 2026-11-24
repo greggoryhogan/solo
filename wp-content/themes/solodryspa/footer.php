@@ -47,7 +47,7 @@
                         $value = get_field($key, 'option');
                         if($value != '') {
                             if($label != '') {
-                                echo '<li>'.$label.': '.$value.'</li>';
+                                echo '<li>'.$label.' '.$value.'</li>';
                             } else {
                                 echo '<li><em>'.$value.'</em></li>';
                             }
