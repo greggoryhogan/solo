@@ -264,7 +264,8 @@ function solo_square_signup($button_text = 'Join the Waitlist', $confirmation = 
 			button.disabled = true;
 
 			try {
-				const request = await fetch(form.action, {
+				// The hidden action field shadows the form's action property.
+				const request = await fetch(form.getAttribute('action'), {
 					method: 'POST',
 					body
 				});
