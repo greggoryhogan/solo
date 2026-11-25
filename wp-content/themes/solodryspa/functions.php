@@ -8,3 +8,4 @@ require( LIBS_DIR .'admin.php' );
 require( LIBS_DIR .'posttypes.php' );
 require( LIBS_DIR .'acf-config.php' );
 require( LIBS_DIR .'frontend.php' );
+require( LIBS_DIR .'square.php' );

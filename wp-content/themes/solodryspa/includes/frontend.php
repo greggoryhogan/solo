@@ -131,7 +131,9 @@ function solo_page_title() {
 				}
 			}
 
-			$title .= '<div class="mobile-gallery mobile-only">'.$image_output.'</div>';
+			if($image_output != '') {
+				$title .= '<div class="mobile-gallery mobile-only">'.$image_output.'</div>';
+			}
 
 			$benefits = get_field('benefits', $post);
 			if($benefits != '') {
@@ -171,23 +173,25 @@ function solo_page_title() {
 			}
 		$title .= '</div>';
 
-		$title .= '<div class="desktop-gallery desktop-only">'.$image_output.'</div>';
+		if($image_output != '') {			
+			$title .= '<div class="desktop-gallery desktop-only">'.$image_output.'</div>';
+		}
 	
 	$title .= '</div>';
 	return $title;
 }
 
-function solo_mailchimp_waitlist_submit() {
+function solo_square_waitlist_submit() {
 	if ( 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
 		wp_send_json_error( null, 405 );
 	}
 
-	if ( ! defined( 'SOLO_MAILCHIMP_API_KEY' ) || ! SOLO_MAILCHIMP_API_KEY ) {
-		wp_send_json_error( null, 503 );
+	if ( ! defined( 'SOLO_SQUARE_APP_TOKEN' ) || ! SOLO_SQUARE_APP_TOKEN ) {
+		wp_send_json_error( 'Signup is unavailable right now. Please try again later.', 503 );
 	}
 
-	if ( ! empty( $_POST['b_3e5a9856682ea90ff75eeba0c_14aac10992'] ) ) {
-		wp_send_json_success( array( 'pending' => true ) );
+	if ( ! empty( $_POST['solo_waitlist_website'] ) ) {
+		wp_send_json_success( array( 'square_unsubscribed' => false ) );
 	}
 
 	$email = isset( $_POST['EMAIL'] ) && is_string( $_POST['EMAIL'] )
@@ -197,42 +201,24 @@ function solo_mailchimp_waitlist_submit() {
 		wp_send_json_error( 'Enter a valid email address.', 400 );
 	}
 
-	$rate_key = 'solo_mc_' . hash_hmac( 'sha256', $_SERVER['REMOTE_ADDR'] ?? '', wp_salt() );
+	$rate_key = 'solo_square_waitlist_' . hash_hmac( 'sha256', $_SERVER['REMOTE_ADDR'] ?? '', wp_salt() );
 	$attempts = (int) get_transient( $rate_key );
 	if ( $attempts >= 10 ) {
 		wp_send_json_error( 'Too many signup attempts. Please try again in a minute.', 429 );
 	}
 	set_transient( $rate_key, $attempts + 1, MINUTE_IN_SECONDS );
 
-	$member = md5( strtolower( $email ) );
-	$result = wp_remote_request( "https://us20.api.mailchimp.com/3.0/lists/14aac10992/members/$member", array(
-		'method'      => 'PUT',
-		'timeout'     => 8,
-		'redirection' => 0,
-		'headers'     => array(
-			'Authorization' => 'Bearer ' . SOLO_MAILCHIMP_API_KEY,
-			'Content-Type'  => 'application/json',
-		),
-		'body'        => wp_json_encode( array(
-			'email_address' => $email,
-			'status_if_new' => 'subscribed',
-		) ),
-	) );
-
-	if ( ! is_wp_error( $result ) && 200 === wp_remote_retrieve_response_code( $result ) ) {
-		$data = json_decode( wp_remote_retrieve_body( $result ), true );
-		$status = $data['status'] ?? '';
-		if ( in_array( $status, array( 'pending', 'subscribed' ), true ) ) {
-			wp_send_json_success( array( 'pending' => 'pending' === $status ) );
-		}
+	$square_unsubscribed = solo_sq_upsert_customer( $email );
+	if ( null === $square_unsubscribed ) {
+		wp_send_json_error( 'Signup is unavailable right now. Please try again later.', 502 );
 	}
 
-	wp_send_json_error( null, 502 );
+	wp_send_json_success( array( 'square_unsubscribed' => $square_unsubscribed ) );
 }
-add_action( 'wp_ajax_solo_mailchimp_waitlist_submit', 'solo_mailchimp_waitlist_submit' );
-add_action( 'wp_ajax_nopriv_solo_mailchimp_waitlist_submit', 'solo_mailchimp_waitlist_submit' );
+add_action( 'wp_ajax_solo_square_waitlist_submit', 'solo_square_waitlist_submit' );
+add_action( 'wp_ajax_nopriv_solo_square_waitlist_submit', 'solo_square_waitlist_submit' );
 
-function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation = 'Thank you for subscribing to our waitlist!') {
+function solo_square_signup($button_text = 'Join the Waitlist', $confirmation = 'Thank you for subscribing to our waitlist!') {
 	if ( ! is_string( $confirmation ) || '' === trim( $confirmation ) ) {
 		$confirmation = 'Thank you for subscribing to our waitlist!';
 	}
@@ -240,7 +226,8 @@ function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation
 	?>
 	<div id="mc_embed_signup" class="mc-signup">
 		<form id="mc-embedded-subscribe-form" class="mc_container" method="post"
-			action="https://solodryspa.us20.list-manage.com/subscribe/post?u=3e5a9856682ea90ff75eeba0c&amp;id=14aac10992&amp;f_id=00ce79e0f0">
+			action="<?php echo esc_url( wp_make_link_relative( admin_url( 'admin-ajax.php' ) ) ); ?>">
+			<input type="hidden" name="action" value="solo_square_waitlist_submit">
 		
 			<input
 				type="email"
@@ -250,11 +237,11 @@ function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation
 				required
 				class=""
 			>
-			<!-- Mailchimp honeypot - leave this -->
+			<!-- Waitlist honeypot -->
 			<div style="position:absolute;left:-5000px;" aria-hidden="true">
 				<input
 					type="text"
-					name="b_3e5a9856682ea90ff75eeba0c_14aac10992"
+					name="solo_waitlist_website"
 					tabindex="-1"
 					value=""
 				>
@@ -265,50 +252,50 @@ function solo_mailchimp_signup($button_text = 'Join the Waitlist', $confirmation
 			<div id="mce-response" role="status"></div>
 		</form>
 	</div>
-	<?php if ( defined( 'SOLO_MAILCHIMP_API_KEY' ) && SOLO_MAILCHIMP_API_KEY ) : ?>
 	<script>
 		document.getElementById('mc-embedded-subscribe-form').addEventListener('submit', async function(e) {
 			const form = this;
-			if (form.dataset.useMailchimpForm) {
-				return;
-			}
-
 			e.preventDefault();
 
 			const response = form.querySelector('#mce-response');
 			const button = form.querySelector('#mc-embedded-subscribe');
 			const body = new URLSearchParams(new FormData(form));
-			body.set('action', 'solo_mailchimp_waitlist_submit');
 			response.textContent = '';
 			button.disabled = true;
 
 			try {
-				const request = await fetch(<?php echo wp_json_encode( wp_make_link_relative( admin_url( 'admin-ajax.php' ) ), JSON_HEX_TAG ); ?>, {
+				const request = await fetch(form.action, {
 					method: 'POST',
 					body
 				});
 				const result = await request.json();
 
 				if (result.success) {
-					response.textContent = result.data.pending
-						? 'Check your email to confirm your waitlist signup.'
-						: <?php echo wp_json_encode( $confirmation, JSON_HEX_TAG ); ?>;
+					response.textContent = <?php echo wp_json_encode( $confirmation, JSON_HEX_TAG ); ?>;
+					if (result.data.square_unsubscribed) {
+						const link = document.createElement('a');
+						link.href = '/resubscribing-to-marketing-emails/';
+						link.textContent = 'Click here to learn how to resubscribe';
+						response.replaceChildren(
+							'This email previously opted out of Square Marketing emails.',
+							document.createElement('br'),
+							link,
+							'.'
+						);
+					}
 					form.reset();
-				} else if (request.status === 400 || request.status === 429) {
+				} else if (typeof result.data === 'string') {
 					response.textContent = result.data;
 				} else {
 					throw new Error('Signup unavailable');
 				}
 			} catch {
-				form.dataset.useMailchimpForm = 'true';
-				response.textContent = 'You can continue on Mailchimp with the email you entered.';
-				button.textContent = 'Continue on Mailchimp';
+				response.textContent = 'Signup is unavailable right now. Please try again later.';
 			} finally {
 				button.disabled = false;
 			}
 		});
 	</script>
-	<?php endif; ?>
 	<?php
 }
 

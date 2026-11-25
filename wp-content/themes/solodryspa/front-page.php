@@ -20,7 +20,8 @@ if ( post_password_required( $post )) {
         echo '<div class="container">';
             echo '<h2 class="mailing-list-heading">'.get_field('mailing_list_heading').'</h2>';
             echo '<div class="mailing-list-content">'.get_field('mailing_list_content').'</div>';
-            solo_mailchimp_signup(get_field('mailing_list_button_text'), get_field('mailing_list_confirmation'));
+            solo_square_signup(get_field('mailing_list_button_text'), get_field('mailing_list_confirmation'));
+            ?> <!--<form action="https://squareup.com/outreach/Ynrv6n/subscribe" method="POST" target="_blank"><input type="email" name="email_address" placeholder="Your Email Address" style="height: 38px; padding: 0 16px; font-size: 14px; border: 1px solid #bec3c8; border-radius: 3px; margin-right: 8px; font-family: 'Helvetica Neue', Helvetica, sans-serif;"><input type="hidden" name="embed" value="true"><button type="submit" style="cursor: pointer; background-color: #040406; color: white; height: 40px; border: 0; border-radius: 3px; font-size: 14px; padding: 0 16px; font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 500;">Join Now</button></form>--> <?php 
         echo '</div>';
     echo '</section>';
     
