@@ -276,9 +276,9 @@ function solo_square_signup($button_text = 'Join the Waitlist', $confirmation = 
 					if (result.data.square_unsubscribed) {
 						const link = document.createElement('a');
 						link.href = '/resubscribing-to-marketing-emails/';
-						link.textContent = 'Click here to learn how to resubscribe';
+						link.textContent = 'Click here to learn how to resubscribe.';
 						response.replaceChildren(
-							'This email previously opted out of Square Marketing emails.',
+							'This email previously opted out of our marketing emails.',
 							document.createElement('br'),
 							link,
 							'.'
